@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">HealthTrack</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_measurement">Registrar Medición</string>
+    <string name="measurement_saved">Medición guardada</string>
+    <string name="blood_pressure">Presión Arterial</string>
+    <string name="glucose">Glucosa</string>
+    <string name="body_data_bmi">Datos para IMC</string>
+    <string name="heart_rate">Frecuencia Cardíaca</string>
 </resources>

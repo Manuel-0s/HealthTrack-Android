@@ -31,28 +31,24 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
-    // LiveData
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
-    // Activities
-    implementation("androidx.activity:activity-ktx:1.9.0")
-    // Fragment
-    implementation("androidx.fragment:fragment-ktx:1.8.0")
-
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
-    implementation("com.google.firebase:firebase-firestore")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0") // ViewModel
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")  // LiveData
+    implementation("androidx.activity:activity-ktx:1.9.0")  // Activities
+    implementation("androidx.fragment:fragment-ktx:1.8.0")  // Fragment
+    implementation(platform("com.google.firebase:firebase-bom:34.12.0")) // Firebase
+    implementation("com.google.firebase:firebase-firestore") // Firebase
     implementation("com.google.firebase:firebase-auth")
+    implementation("androidx.core:core-splashscreen:1.0.1") // Splash Screen
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)

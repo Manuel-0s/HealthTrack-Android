@@ -2,17 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/baseline_home"
+        android:icon="@drawable/ic_home"
         android:title="Inicio" />
 
     <item
         android:id="@+id/nav_metrics"
-        android:icon="@drawable/baseline_bar_chart"
-        android:title="Métricas" />
+        android:icon="@drawable/ic_bar_chart"
+        android:title="Historial" />
+
+    <item
+        android:id="@+id/placeholder"
+        android:title=""
+        android:enabled="false" />
+
+    <item
+        android:id="@+id/nav_history_placeholder"
+        android:icon="@drawable/ic_edit"
+        android:title="Citas" />
 
     <item
         android:id="@+id/nav_perfil"
-        android:icon="@drawable/baseline_person"
+        android:icon="@drawable/ic_person"
         android:title="Perfil" />
-
 </menu>

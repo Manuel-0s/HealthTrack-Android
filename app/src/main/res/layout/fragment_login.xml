@@ -8,7 +8,7 @@
     android:id="@+id/loginFragment"
     android:background="@color/white"
     android:padding="32dp"
-    tools:context=".ui.fragment.LoginFragment">
+    tools:context=".ui.auth.login.LoginFragment">
 
     <LinearLayout
         android:id="@+id/lyIcon"
@@ -20,18 +20,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:background="@drawable/icon_circle"
-            android:backgroundTint="@color/primary_green_light">
-            <ImageView
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/baseline_monitor_heart_24"
-                app:tint="@color/primary_green" />
-        </FrameLayout>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:srcCompat="@drawable/ic_splash_logo" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +63,7 @@
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusTopStart="12dp"
-        app:startIconDrawable="@drawable/baseline_person"
+        app:startIconDrawable="@drawable/ic_person"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvWelcome">
@@ -100,7 +92,7 @@
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusTopStart="12dp"
-        app:startIconDrawable="@drawable/baseline_lock"
+        app:startIconDrawable="@drawable/ic_lock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilEmail"
@@ -157,5 +149,15 @@
             android:focusable="true"
             android:padding="4dp" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
