@@ -4,9 +4,38 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- App Colors -->
-    <color name="primary_green">#0B9A7B</color>
+    <color name="primary_green">#0b9a7b</color>
     <color name="primary_green_light">#EEF6F3</color>
     <color name="text_primary">#2B3437</color>
     <color name="text_secondary">#90A4AE</color>
     <color name="lavender">#8692f7</color>
+    <color name="lavender_light">#F0F1FE</color>
+
+    <color name="red_light">#FFEBEE</color>
+    <color name="red">#FF5252</color>
+
+    <color name="orange_light">#FFF3E0</color>
+    <color name="orange">#FF9800</color>
+
+    <color name="bg_dark">#121212</color>
+    <color name="card_bg">#1E1E1E</color>
+
+    <!-- Texto -->
+    <color name="text_dim">#757575</color>
+
+    <!-- Estados de glucosa -->
+    <color name="status_optimal">#4CAF50</color>   <!-- Verde: Óptimo -->
+    <color name="status_normal">#66BB6A</color>    <!-- Verde claro: Normal -->
+    <color name="status_elevated">#FFA726</color>  <!-- Naranja: Elevado -->
+    <color name="status_high">#EF5350</color>      <!-- Rojo: Alto -->
+
+    <!-- Chip activo (Glucosa) -->
+    <color name="chip_active_bg">#2E7D5E</color>
+    <color name="chip_inactive_bg">#2A2A2A</color>
+
+    <!-- Línea del gráfico -->
+    <color name="chart_line">#4CAF50</color>
+    <color name="chart_fill_start">#334CAF50</color>
+    <color name="chart_fill_end">#004CAF50</color>
+
 </resources>

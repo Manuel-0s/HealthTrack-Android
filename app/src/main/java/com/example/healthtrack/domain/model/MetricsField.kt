@@ -1,11 +1,12 @@
 package com.example.healthtrack.domain.model
 
 enum class MetricsField(val label: String) {
-    FREQUENCY("Frecuencia Cardíaca"),
+    FREQUENCY("Frecuencia cardiaca"),
     GLUCOSE("Glucosa"),
-    BLOOD_PRESSURE("Presión Arterial"),
-    SYSTOLIC_PRESSURE("Presión"),
-    DIASTOLIC_PRESSURE("Presión diastólica"),
+    BLOOD_PRESSURE("Presion Arterial"),
+    SYSTOLIC_PRESSURE("Presion sistolica"),
+    DIASTOLIC_PRESSURE("Presion diastolica"),
+
     IMC("IMC"),
     WEIGHT("Peso"),
     HEIGHT("Estatura"),

@@ -33,27 +33,40 @@ class MeasurementRepositoryImpl(
         }
     }
 
-    override fun getLatestMeasurementFlow(userId: String, metricType: MetricsField): Flow<Measurement?> = callbackFlow {
-        val listener = firestore.collection(COLLECTION)
-            .whereEqualTo("userId", userId)
-            .whereEqualTo("metricType", metricType.label)
-            .orderBy("recordedAt", Query.Direction.DESCENDING)
-            .limit(1)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    android.util.Log.e("Firestore_Debug", "Error en listener de ${metricType.label}: ${error.message}")
-                    trySend(null)
-                    return@addSnapshotListener
-                }
-                
-                val measurement = if (snapshot != null && !snapshot.isEmpty) {
-                    mapDocumentToMeasurement(snapshot.documents[0], metricType)
-                } else null
-                
-                trySend(measurement)
+    override suspend fun getLatestMeasurement(userId: String, metricType: MetricsField): Measurement? {
+        return try {
+            val snapshot = firestore.collection(COLLECTION)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("metricType", metricType.label)
+                .orderBy("recordedAt", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .await()
+
+            if (!snapshot.isEmpty) {
+                mapDocumentToMeasurement(snapshot.documents[0], metricType)
+            } else null
+        } catch (e: Exception) { null }
+    }
+
+    override suspend fun getRecentMeasurements(userId: String, limit: Long): List<Measurement> {
+        return try {
+            val snapshot = firestore.collection(COLLECTION)
+                .whereEqualTo("userId", userId)
+                .orderBy("recordedAt", Query.Direction.DESCENDING)
+                .limit(limit)
+                .get()
+                .await()
+
+            snapshot.documents.mapNotNull { doc ->
+                val typeLabel = doc.getString("metricType") ?: return@mapNotNull null
+                val metricType = MetricsField.values().find { it.label == typeLabel } ?: return@mapNotNull null
+                mapDocumentToMeasurement(doc, metricType)
             }
-        awaitClose { listener.remove() }
-    }.onStart { emit(null) }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 
     private fun mapDocumentToMeasurement(document: DocumentSnapshot, metricType: MetricsField): Measurement? {
         return when (metricType) {

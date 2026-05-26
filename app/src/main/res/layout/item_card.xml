@@ -2,18 +2,19 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="20dp"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
+    app:cardElevation="2dp"
     app:strokeWidth="0dp">
 
     <LinearLayout
-        android:id="@+id/carouselBackground"
+        android:id="@+id/cardBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_green_light"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="20dp">
 
@@ -24,40 +25,38 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvCarouselTag"
+                android:id="@+id/tvCardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estado"
                 android:textColor="@color/primary_green"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Título de Prueba" />
 
             <TextView
-                android:id="@+id/tvCarouselTitle"
+                android:id="@+id/tvCardValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Título"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Valor de Prueba" />
 
             <TextView
-                android:id="@+id/tvCarouselSubtitle"
+                android:id="@+id/tvCardStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Subtítulo informativo"
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="Consejo de prueba de la IA" />
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/ivCarouselIcon"
+            android:id="@+id/ivCardIcon"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_bar_chart"
-            app:tint="@color/primary_green" />
-    </LinearLayout>
+            android:src="@drawable/ic_bar_chart" /> </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

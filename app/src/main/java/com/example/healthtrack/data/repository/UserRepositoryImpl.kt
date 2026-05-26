@@ -13,17 +13,23 @@ class UserRepositoryImpl(
 
     companion object {
         private const val USERS_COLLECTION = "usuarios"
+        private var cachedUser: UserModel? = null
     }
 
     override suspend fun getUserData(): UserModel? {
         val uid = auth.currentUser?.uid ?: return null
+
+        cachedUser?.let { return it }
+
         return try {
             val document = firestore.collection(USERS_COLLECTION).document(uid).get().await()
-            if (document.exists()) {
+            val user = if (document.exists()) {
                 document.toObject(UserModel::class.java)
             } else {
                 null
             }
+            cachedUser = user
+            user
         } catch (e: Exception) {
             null
         }
@@ -31,9 +37,16 @@ class UserRepositoryImpl(
 
     override suspend fun updateStats(uid: String, updates: Map<String, Any>) {
         firestore.collection(USERS_COLLECTION).document(uid).update(updates).await()
+        cachedUser = null
+    }
+
+    override suspend fun updateAuthEmail(newEmail: String) {
+        auth.currentUser?.verifyBeforeUpdateEmail(newEmail)?.await()
+        cachedUser = null
     }
 
     override fun logout() {
         auth.signOut()
+        cachedUser = null
     }
 }

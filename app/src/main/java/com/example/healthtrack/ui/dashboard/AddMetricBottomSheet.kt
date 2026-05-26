@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.healthtrack.R
 import com.example.healthtrack.databinding.BottomsheetLayoutBinding
 import com.example.healthtrack.domain.model.MetricsField
 import com.example.healthtrack.domain.model.SaveMetricResult
+import com.example.healthtrack.ui.home.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddMetricBottomSheet : BottomSheetDialogFragment() {
@@ -19,7 +21,8 @@ class AddMetricBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomsheetLayoutBinding? = null
     private val binding get() = _binding!!
     
-    private val viewModel: DashboardViewModel by activityViewModels()
+    private val viewModel: DashboardViewModel by viewModels()
+    private val viewModelHome: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +78,7 @@ class AddMetricBottomSheet : BottomSheetDialogFragment() {
                     binding.btnSave.isEnabled = true
 
                     Toast.makeText(requireContext(), getString(R.string.measurement_saved), Toast.LENGTH_SHORT).show()
-
+                    viewModelHome.refresh()
                     showSelectionMenu()
                     viewModel.resetStatus()
                 }

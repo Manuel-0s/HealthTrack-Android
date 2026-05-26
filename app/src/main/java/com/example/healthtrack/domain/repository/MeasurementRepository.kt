@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MeasurementRepository {
     suspend fun saveMeasurement(measurement: Measurement): SaveMetricResult
-    fun getLatestMeasurementFlow(userId: String, metricType: MetricsField): Flow<Measurement?>
+    suspend fun getLatestMeasurement(userId: String, metricType: MetricsField): Measurement?
+    suspend fun getRecentMeasurements(userId: String, limit: Long): List<Measurement>
 }

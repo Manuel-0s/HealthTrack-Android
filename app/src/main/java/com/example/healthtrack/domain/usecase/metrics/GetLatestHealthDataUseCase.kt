@@ -20,15 +20,11 @@ class GetLatestHealthDataUseCase(
         MetricsField.DIASTOLIC_PRESSURE
     )
 
-    operator fun invoke(): Flow<Map<MetricsField, Measurement?>> {
-        val userId = authRepository.getCurrentUserUid() ?: return flowOf(emptyMap())
+    suspend operator fun invoke(): Map<MetricsField, Measurement?> {
+        val userId = authRepository.getCurrentUserUid() ?: return emptyMap()
 
-        val flows = mainMetrics.map { field ->
-            repository.getLatestMeasurementFlow(userId, field)
-        }
-
-        return combine(flows) { measurements ->
-            mainMetrics.zip(measurements).toMap()
+        return mainMetrics.associateWith { field ->
+            repository.getLatestMeasurement(userId, field)
         }
     }
 }

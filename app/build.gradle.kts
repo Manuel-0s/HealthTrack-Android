@@ -48,7 +48,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.12.0")) // Firebase
     implementation("com.google.firebase:firebase-firestore") // Firebase
     implementation("com.google.firebase:firebase-auth")
-    implementation("androidx.core:core-splashscreen:1.0.1") // Splash Screen
+    // Splash Screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    // SDK IA
+    implementation("com.google.firebase:firebase-ai")
+    //Corrutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)

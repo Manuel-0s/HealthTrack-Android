@@ -6,4 +6,8 @@
     <string name="glucose">Glucosa</string>
     <string name="body_data_bmi">Datos para IMC</string>
     <string name="heart_rate">Frecuencia Cardíaca</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open">Abrir menú lateral</string>
+    <string name="close">Cerrar menú lateral</string>
 </resources>
