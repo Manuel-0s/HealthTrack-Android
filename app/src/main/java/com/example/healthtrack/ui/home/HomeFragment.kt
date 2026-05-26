@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var cardAdapter: CardAdapter
+    private var dots = mutableListOf<ImageView>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +39,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupCarousel() {
-        val cards = listOf(
-            Recommendation("Control de IMC", "IMC: 24.5", "¡En tu peso ideal! Sigue así."),
-            Recommendation("Monitoreo de Glucosa", "Glucosa: 135 mg/dL", "Niveles algo elevados. Camina 15 min."),
-            Recommendation("Presión Arterial", "120/80 mmHg", "Presión normal. ¡Excelente!"),
-            Recommendation("Ritmo Cardíaco", "72 BPM", "Frecuencia ideal en reposo.")
-        )
-
-        cardAdapter = CardAdapter(cards)
+        cardAdapter = CardAdapter(emptyList())
 
         binding.viewPagerCarousel.apply {
             adapter = cardAdapter
@@ -53,13 +47,17 @@ class HomeFragment : Fragment() {
             setPageTransformer { page, position ->
                 page.translationX = position * -32.dpToPx()
             }
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    updateDots(position)
+                }
+            })
         }
-
-        setupDots(cards.size)
     }
 
     private fun setupDots(count: Int) {
-        val dots = mutableListOf<ImageView>()
+        binding.dotsContainer.removeAllViews()
+        dots.clear()
 
         repeat(count) {
             val dot = ImageView(requireContext()).apply {
@@ -72,20 +70,18 @@ class HomeFragment : Fragment() {
             dots.add(dot)
         }
 
-        dots[0].setImageResource(R.drawable.dot_active)
+        if (dots.isNotEmpty()) {
+            dots[0].setImageResource(R.drawable.dot_active)
+        }
+    }
 
-        binding.viewPagerCarousel.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    dots.forEachIndexed { index, dot ->
-                        dot.setImageResource(
-                            if (index == position) R.drawable.dot_active
-                            else R.drawable.dot_inactive
-                        )
-                    }
-                }
-            }
-        )
+    private fun updateDots(position: Int) {
+        dots.forEachIndexed { index, dot ->
+            dot.setImageResource(
+                if (index == position) R.drawable.dot_active
+                else R.drawable.dot_inactive
+            )
+        }
     }
 
     private fun Int.dpToPx(): Int =
@@ -99,23 +95,62 @@ class HomeFragment : Fragment() {
         viewModel.latestMetrics.observe(viewLifecycleOwner) { metrics ->
             updateMetricsUI(metrics)
         }
+
+        viewModel.recommendations.observe(viewLifecycleOwner) { recommendations ->
+            cardAdapter.updateData(recommendations)
+            setupDots(recommendations.size)
+        }
     }
 
     private fun updateMetricsUI(metrics: Map<MetricsField, Measurement?>) {
         val glucose = metrics[MetricsField.GLUCOSE] as? Measurement.Glucose
         binding.tvGlucoseValue.text = glucose?.let { "${it.value} mg/dL" } ?: "-- mg/dL"
+        binding.tvGlucoseStatus.text = glucose?.let { getStatusForMetric(MetricsField.GLUCOSE, it.value) } ?: ""
 
         val systolic = metrics[MetricsField.SYSTOLIC_PRESSURE] as? Measurement.SystolicPressure
         val diastolic = metrics[MetricsField.DIASTOLIC_PRESSURE] as? Measurement.DiastolicPressure
         binding.tvPressureValue.text = if (systolic != null && diastolic != null) {
             "${systolic.value}/${diastolic.value}"
         } else "--/--"
+        binding.tvPressureStatus.text = if (systolic != null && diastolic != null) {
+            getPressureStatus(systolic.value, diastolic.value)
+        } else ""
 
         val heartRate = metrics[MetricsField.FREQUENCY] as? Measurement.HeartRate
         binding.tvHeartRateValue.text = heartRate?.let { "${it.value.toInt()} BPM" } ?: "-- BPM"
+        binding.tvHeartRateStatus.text = heartRate?.let { getStatusForMetric(MetricsField.FREQUENCY, it.value) } ?: ""
 
         val imc = metrics[MetricsField.IMC] as? Measurement.IMC
         binding.tvWeightValue.text = imc?.let { String.format("%.1f", it.value) } ?: "--"
+        binding.tvWeightStatus.text = imc?.let { getStatusForMetric(MetricsField.IMC, it.value) } ?: ""
+    }
+
+    private fun getStatusForMetric(field: MetricsField, value: Double): String = when (field) {
+        MetricsField.GLUCOSE -> when {
+            value < 70 -> "Baja"
+            value < 100 -> "Normal"
+            value < 126 -> "Prediabetes"
+            else -> "Alta"
+        }
+        MetricsField.FREQUENCY -> when {
+            value < 60 -> "Bajo"
+            value <= 100 -> "Normal"
+            else -> "Alto"
+        }
+        MetricsField.IMC -> when {
+            value < 18.5 -> "Bajo peso"
+            value < 25.0 -> "Normal"
+            value < 30.0 -> "Sobrepeso"
+            else -> "Obesidad"
+        }
+        else -> ""
+    }
+
+    private fun getPressureStatus(systolic: Int, diastolic: Int): String = when {
+        systolic < 120 && diastolic < 80 -> "Normal"
+        systolic < 130 && diastolic < 80 -> "Elevada"
+        systolic < 140 || diastolic < 90 -> "Hipertensión N1"
+        else -> "Hipertensión N2"
     }
 
     override fun onDestroyView() {

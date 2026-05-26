@@ -22,7 +22,7 @@ class AddMetricBottomSheet : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     
     private val viewModel: DashboardViewModel by viewModels()
-    private val viewModelHome: HomeViewModel by viewModels()
+    private val viewModelHome: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

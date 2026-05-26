@@ -11,8 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.healthtrack.R
 import com.example.healthtrack.databinding.ActivityDashboardBinding
+import com.example.healthtrack.ui.appointment.AppointmentFragment
 import com.example.healthtrack.ui.auth.AuthActivity
 import com.example.healthtrack.ui.home.HomeFragment
+import com.example.healthtrack.ui.metrics.MetricsFragment
+import com.example.healthtrack.ui.prescription.PrescriptionFragment
 import com.example.healthtrack.ui.profile.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -80,15 +83,15 @@ class DashboardActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_metrics -> {
-                    // Historial / Gráficas
+                    changeFragment(MetricsFragment())
                     true
                 }
-                R.id.nav_history_placeholder -> {
-                    // Citas / Recordatorios
+                R.id.nav_appointment -> {
+                    changeFragment(AppointmentFragment())
                     true
                 }
-                R.id.nav_perfil -> {
-                    changeFragment(ProfileFragment())
+                R.id.nav_prescription -> {
+                    changeFragment(PrescriptionFragment())
                     true
                 }
                 else -> false

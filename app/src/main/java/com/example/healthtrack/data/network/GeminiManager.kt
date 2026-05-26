@@ -12,19 +12,20 @@ import org.json.JSONArray
 class GeminiManager {
 
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI())
-        .generativeModel("gemini-3.5-flash",
+        .generativeModel("gemini-1.5-flash",
             generationConfig = generationConfig {
                 responseMimeType = "application/json"
+                temperature = 0.1f
             },
-            systemInstruction = content { text("Eres un asistente experto en salud y bienestar para la aplicación HealthTrack. " +
-                    "Tu tarea es recibir biomarcadores del usuario y devolver exactamente DOS consejos o alertas personalizados. " +
-                    "Debes responder ÚNICAMENTE con un arreglo JSON con la siguiente estructura: " +
+            systemInstruction = content { text("Eres un asistente de salud para HealthTrack. " +
+                    "Recibirás biomarcadores y debes devolver exactamente DOS consejos ultra-breves (máximo 10 palabras por consejo). " +
+                    "Responde ÚNICAMENTE con un arreglo JSON: " +
                     "[ " +
-                    "  { \"title\": \"Título corto\", \"value\": \"Métrica\", \"advice\": \"Consejo breve.\" } " +
+                    "  { \"title\": \"Máx 3 palabras\", \"value\": \"Métrica y unidad\", \"advice\": \"Máx 10 palabras.\" } " +
                     "]") }
             )
 
-    suspend fun obtenerRecomendaciones(imc: String, glucosa: String, presion: String, ritmo: String): List<Recommendation> {
+    suspend fun getRecomendations(imc: String, glucosa: String, presion: String, ritmo: String): List<Recommendation> {
         val prompt = "Métricas actuales -> IMC: $imc, Glucosa: $glucosa, Presión: $presion, Ritmo: $ritmo BPM."
         android.util.Log.d("Gemini_Debug", "Prompt enviado: $prompt")
 

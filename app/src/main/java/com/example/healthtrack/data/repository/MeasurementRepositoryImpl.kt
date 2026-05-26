@@ -5,7 +5,6 @@ import com.example.healthtrack.domain.model.MetricsField
 import com.example.healthtrack.domain.model.SaveMetricResult
 import com.example.healthtrack.domain.repository.MeasurementRepository
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -38,13 +37,13 @@ class MeasurementRepositoryImpl(
             val snapshot = firestore.collection(COLLECTION)
                 .whereEqualTo("userId", userId)
                 .whereEqualTo("metricType", metricType.label)
-                .orderBy("recordedAt", Query.Direction.DESCENDING)
-                .limit(1)
                 .get()
                 .await()
 
             if (!snapshot.isEmpty) {
-                mapDocumentToMeasurement(snapshot.documents[0], metricType)
+                snapshot.documents.mapNotNull { 
+                    mapDocumentToMeasurement(it, metricType)
+                }.sortedByDescending { it.recordedAt }.firstOrNull()
             } else null
         } catch (e: Exception) { null }
     }
@@ -53,8 +52,6 @@ class MeasurementRepositoryImpl(
         return try {
             val snapshot = firestore.collection(COLLECTION)
                 .whereEqualTo("userId", userId)
-                .orderBy("recordedAt", Query.Direction.DESCENDING)
-                .limit(limit)
                 .get()
                 .await()
 
@@ -62,7 +59,7 @@ class MeasurementRepositoryImpl(
                 val typeLabel = doc.getString("metricType") ?: return@mapNotNull null
                 val metricType = MetricsField.values().find { it.label == typeLabel } ?: return@mapNotNull null
                 mapDocumentToMeasurement(doc, metricType)
-            }
+            }.sortedByDescending { it.recordedAt }.take(limit.toInt())
         } catch (e: Exception) {
             emptyList()
         }
